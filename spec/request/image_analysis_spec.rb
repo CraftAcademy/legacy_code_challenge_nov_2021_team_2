@@ -80,7 +80,6 @@ RSpec.describe Api::AnalysesController, type: :request do
         end
       end
 
-      # https://images.unsplash.com/photo-1572648414902-be106c6c826e?ixid=MXwxMjA3fDB8MHxzZWFyY2h8Mnx8bXVyZGVyfGVufDB8fDB8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60
       describe 'gore content' do
         before do
           post '/api/analyses', params: { analysis: {

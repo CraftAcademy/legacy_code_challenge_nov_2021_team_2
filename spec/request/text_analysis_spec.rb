@@ -30,6 +30,7 @@ RSpec.describe Api::AnalysesController, type: :request do
         ).to eq 'Missing category and resource params'
       end
     end
+    
     describe 'with category param missing' do
       before do
         post '/api/analyses',

@@ -35,7 +35,7 @@ class Api::AnalysesController < ApplicationController
   end
 
   def text_analysis(text)
-    model_id = 'cl_KFXhoTdt' # Profanity & Abuse Detection
+    model_id = "cl_KFXhoTdt" # Profanity & Abuse Detection
     response = Monkeylearn.classifiers.classify(model_id, [text])
     response.body[0]
   end
@@ -49,15 +49,15 @@ class Api::AnalysesController < ApplicationController
   end
 
   def validate_params_presence
-    if params[:category].nil? && params[:resource].nil?
+    if params[:analysis].nil?
       render json: {
-               message: 'Missing category and resource params',
+               message: "Missing category and resource params",
              },
              status: 422
-    elsif params[:category].nil?
-      render json: { message: 'Missing category param' }, status: 422
-    else
-      render json: { message: 'Missing resource param' }, status: 422
+    elsif params[:analysis][:category].nil?
+      render json: { message: "Missing category param" }, status: 422
+    elsif params[:analysis][:resource].nil?
+      render json: { message: "Missing resource param" }, status: 422
     end
   end
 end

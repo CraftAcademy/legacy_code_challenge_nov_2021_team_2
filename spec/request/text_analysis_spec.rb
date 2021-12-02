@@ -25,7 +25,7 @@ RSpec.describe Api::AnalysesController, type: :request do
       end
 
       it 'is expected to return error message' do
-        expect(JSON.parse(response.body)['message']).to eq 'Missing params'
+        expect(response_json['message']).to eq 'Missing params'
       end
     end
   end

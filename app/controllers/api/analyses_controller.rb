@@ -49,8 +49,15 @@ class Api::AnalysesController < ApplicationController
   end
 
   def validate_params_presence
-    if params[:category].nil? or params[:resource].nil?
-      render json: { message: 'Missing params' }, status: 422
+    if params[:category].nil? && params[:resource].nil?
+      render json: {
+               message: 'Missing category and resource params',
+             },
+             status: 422
+    elsif params[:category].nil?
+      render json: { message: 'Missing category param' }, status: 422
+    else
+      render json: { message: 'Missing resource param' }, status: 422
     end
   end
 end

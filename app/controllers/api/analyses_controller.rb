@@ -42,6 +42,10 @@ class Api::AnalysesController < ApplicationController
 
   def image_analysis(url)
     Clarifai::Rails::Detector.new(url).image.concepts_with_percent
+  rescue RestClient::BadRequest => e
+    render json: {
+      message: 'Invalid image URL'
+    }, status: 422
   end
 
   def analysis_category

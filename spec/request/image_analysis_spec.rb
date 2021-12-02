@@ -61,7 +61,7 @@ RSpec.describe Api::AnalysesController, type: :request do
             .to be_truthy
         end
       end
-      
+
       describe 'suggestive text' do
         before do
           post '/api/analyses', params: { analysis: {
@@ -92,9 +92,26 @@ RSpec.describe Api::AnalysesController, type: :request do
           expect(response).to have_http_status 200
         }
 
-        it 'is expected to respond with high gore score' do 
+        it 'is expected to respond with high gore score' do
           expect(response_json['results']['gore'].to_f > 0.9)
             .to be_truthy
+        end
+      end
+
+      describe 'Invalid image URL' do
+        before do
+          post '/api/analyses', params: { analysis: {
+            resource: 'hello world',
+            category: :image
+          } }
+        end
+
+        it "is expected to respond with status 422" do
+          expect(response.status).to eq 422
+        end
+
+        it 'is expected to return error message' do
+          expect(response_json['message']).to eq 'Invalid image URL'
         end
       end
     end

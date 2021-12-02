@@ -1,12 +1,17 @@
 # frozen_string_literal: true
 
 class Api::AnalysesController < ApplicationController
+  before_action :validate_params_presence, only: [:create]
   before_action :analyze_resource, only: [:create]
 
   def create
-    analysis = Analysis.create(analysis_params
-                                   .merge!(results: @results,
-                                           request_ip: request.remote_ip))
+    analysis =
+      Analysis.create(
+        analysis_params.merge!(
+          results: @results,
+          request_ip: request.remote_ip,
+        ),
+      )
     if analysis.persisted?
       render json: analysis
     else
@@ -36,13 +41,16 @@ class Api::AnalysesController < ApplicationController
   end
 
   def image_analysis(url)
-    Clarifai::Rails::Detector
-      .new(url)
-      .image
-      .concepts_with_percent
+    Clarifai::Rails::Detector.new(url).image.concepts_with_percent
   end
 
   def analysis_category
     analysis_params[:category].to_sym
+  end
+
+  def validate_params_presence
+    if params[:category].nil? or params[:resource].nil?
+      render json: { message: 'Missing params' }, status: 422
+    end
   end
 end

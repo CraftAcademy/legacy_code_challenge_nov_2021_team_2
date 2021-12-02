@@ -7,11 +7,11 @@ RSpec.describe Api::AnalysesController, type: :request do
            params: {
              analysis: {
                resource: 'This is awesome',
-               category: :text,
-             },
+               category: :text
+             }
            }
     end
-    it 'responds with an text analysis' do
+    it 'is expected to responds with an text analysis' do
       expect(response.status).to eq 200
     end
   end
@@ -26,18 +26,18 @@ RSpec.describe Api::AnalysesController, type: :request do
 
       it 'is expected to return error message' do
         expect(
-          response_json['message'],
+          response_json['message']
         ).to eq 'Missing category and resource params'
       end
     end
-    
+
     describe 'with category param missing' do
       before do
         post '/api/analyses',
              params: {
                analysis: {
-                 resource: 'This is awesome',
-               },
+                 resource: 'This is awesome'
+               }
              }
       end
 
@@ -59,6 +59,28 @@ RSpec.describe Api::AnalysesController, type: :request do
 
       it 'is expected to return error message' do
         expect(response_json['message']).to eq 'Missing resource param'
+      end
+    end
+
+    describe 'intercept profanity' do
+      before do
+        post '/api/analyses',
+             params: {
+               analysis: {
+                 resource: 'Fucking idiot',
+                 category: :text
+               }
+             }
+      end
+
+      it 'is expected to respond with status 200' do
+        expect(response.status).to eq 200
+      end
+
+      it 'is expected to respond with an error' do
+        expect(
+          response_json['message']
+        ).to eq 'Profanity was detected, message intercepted'
       end
     end
   end

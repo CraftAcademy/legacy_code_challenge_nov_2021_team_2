@@ -9,8 +9,8 @@ class Api::AnalysesController < ApplicationController
       Analysis.create(
         analysis_params.merge!(
           results: @results,
-          request_ip: request.remote_ip,
-        ),
+          request_ip: request.remote_ip
+        )
       )
     if analysis.persisted?
       render json: analysis
@@ -35,7 +35,7 @@ class Api::AnalysesController < ApplicationController
   end
 
   def text_analysis(text)
-    model_id = "cl_KFXhoTdt" # Profanity & Abuse Detection
+    model_id = 'cl_KFXhoTdt' # Profanity & Abuse Detection
     response = Monkeylearn.classifiers.classify(model_id, [text])
     response.body[0]
   end
@@ -51,13 +51,13 @@ class Api::AnalysesController < ApplicationController
   def validate_params_presence
     if params[:analysis].nil?
       render json: {
-               message: "Missing category and resource params",
-             },
+        message: 'Missing category and resource params'
+      },
              status: 422
     elsif params[:analysis][:category].nil?
-      render json: { message: "Missing category param" }, status: 422
+      render json: { message: 'Missing category param' }, status: 422
     elsif params[:analysis][:resource].nil?
-      render json: { message: "Missing resource param" }, status: 422
+      render json: { message: 'Missing resource param' }, status: 422
     end
   end
 end

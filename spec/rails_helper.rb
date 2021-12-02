@@ -3,11 +3,19 @@
 ENV['RAILS_ENV'] ||= 'test'
 require File.expand_path('../../config/environment', __FILE__)
 # Prevent database truncation if the environment is production
-abort("The Rails environment is running in production mode!") if Rails.env.production?
+if Rails.env.production?
+  abort('The Rails environment is running in production mode!')
+end
 require 'rspec/rails'
 require 'spec_helper'
 
 ActiveRecord::Migration.maintain_test_schema!
+
+module ResponseJSON
+  def response_json
+    JSON.parse(response.body)
+  end
+end
 
 RSpec.configure do |config|
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
@@ -25,6 +33,7 @@ RSpec.configure do |config|
   config.shared_context_metadata_behavior = :apply_to_host_groups
 
   config.include(Shoulda::Matchers::ActiveRecord, type: :model)
+  config.include ResponseJSON
 end
 
 Shoulda::Matchers.configure do |config|

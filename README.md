@@ -8,9 +8,9 @@ IMAGE: https://www.clarifai.com/model-gallery
 
 TEXT: https://monkeylearn.com/blog/public-and-ready-to-use-modules/
 
-# Deployed version
+# New deployed version
 
-https://safe-for-work-api.herokuapp.com/
+https://safe-for-work-api-2.herokuapp.com/
 
 ### Endpoints
 
